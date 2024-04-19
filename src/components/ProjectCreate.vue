@@ -49,51 +49,87 @@
 
 </template>
   
-  <script>
-  import { createProject, uploadImage, deleteImage } from '@/firebase'
+<script>
+
+import { createProject, uploadImage, deleteImage } from '@/firebase'
 import router from '@/router'
-  import { reactive } from 'vue'
-  import {  useRouter } from 'vue-router'
-  
+import { reactive } from 'vue'
+import {  useRouter } from 'vue-router'
+
+let file = ""
   export default {
     setup() {
       const form = reactive({ name: '', desc: '', image: '' })
       const router = useRouter()
       const onSubmit = async () => {
-        if (form.image != ''){
+        // if (form.image != ''){
+    try {
+        // console.log(file)
+        const imageUrl = await uploadImage(file);
+        form.image = imageUrl;
+        // console.log(form.image)
+        // alert("Картинка успешно загружена")
+
           await createProject({ ...form })
           form.name = ''
           form.desc = ''
           form.image = ''
         router.push('/')
-        }
-        else {
-          alert("Вы не выбрали (не загрузили картинку!)")
-        }
-      }
-  
-      return { form, onSubmit }
-    },
-
-  methods: {
-    async handleFileUpload(event) {
-      const file = event.target.files[0];
-      try {
-        const imageUrl = await uploadImage(file);
-        this.form.image = imageUrl;
-        alert("Картинка успешно загружена")
+        // }
+        // else {
+        //   alert("Вы не выбрали (не загрузили картинку!)")
+        // }
       } catch (error) {
         alert("Вы загрузили не картинку!")
         // console.error('Error uploading image:', error);
       }
-
-    },
-    async redirectToHome(){
-      if (this.form.image != ''){
-          await deleteImage(this.form.image)
       }
+      const handleFileUpload = async (event) => {
+      file = event.target.files[0];
+      // console.log(file)
+      // try {
+        //  bufURL = URL.createObjectURL(file);
+        // const imageUrl = await uploadImage(file);
+        form.image = URL.createObjectURL(file);
+        // console.log(form.image)
+      //   alert("Картинка успешно загружена")
+      // } catch (error) {
+      //   alert("Вы загрузили не картинку!")
+      //   // console.error('Error uploading image:', error);
+      // }
+
+    }
+    const redirectToHome = async () => {
+      // if (this.form.image != ''){
+      //     await deleteImage(this.form.image)
+      // }
       router.push('/')
     }
+      
+      
+  
+      return { form, onSubmit, handleFileUpload, redirectToHome }
+    },
+
+  methods: {
+    // async handleFileUpload(event) {
+    //   const file = event.target.files[0];
+    //   try {
+    //     const imageUrl = await uploadImage(file);
+    //     this.form.image = imageUrl;
+    //     alert("Картинка успешно загружена")
+    //   } catch (error) {
+    //     alert("Вы загрузили не картинку!")
+    //     // console.error('Error uploading image:', error);
+    //   }
+
+    // },
+    // async redirectToHome(){
+    //   if (this.form.image != ''){
+    //       await deleteImage(this.form.image)
+    //   }
+    //   router.push('/')
+    // }
   }
 
 }
