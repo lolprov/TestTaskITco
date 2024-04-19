@@ -23,12 +23,14 @@ export const uploadImage = async (file) => {
 
   const storageRef = ref(storage, 'images/' + makeid());
   try {
+    if (file.type == "image/jpg" || file.type == "image/jpeg" || file.type == "image/png"){
     const snapshot = await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(snapshot.ref);
-
-    return downloadURL; 
+    return downloadURL;
+    }
+    else{throw error} 
   } catch (error) {
-    console.error('Error uploading image:', error);
+    // console.error('Error uploading image:', error);
     throw error; 
   }
 }

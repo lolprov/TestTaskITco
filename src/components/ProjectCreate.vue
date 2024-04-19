@@ -78,13 +78,13 @@ import router from '@/router'
   methods: {
     async handleFileUpload(event) {
       const file = event.target.files[0];
-
       try {
         const imageUrl = await uploadImage(file);
         this.form.image = imageUrl;
         alert("Картинка успешно загружена")
       } catch (error) {
-        console.error('Error uploading image:', error);
+        alert("Вы загрузили не картинку!")
+        // console.error('Error uploading image:', error);
       }
 
     },

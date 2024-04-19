@@ -97,7 +97,8 @@
         form.image = imageUrl;
         alert("Картинка успешно загружена")
       } catch (error) {
-        console.error('Error uploading image:', error);
+        alert("Вы загрузили не картинку!")
+        // console.error('Error uploading image:', error);
       }
     }
 
