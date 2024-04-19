@@ -21,7 +21,7 @@ const projectsCollection = collection(db, 'projects')
 
 export const uploadImage = async (file) => {
 
-  const storageRef = ref(storage, 'images/' + file.name);
+  const storageRef = ref(storage, 'images/' + makeid());
   try {
     const snapshot = await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(snapshot.ref);
@@ -64,5 +64,17 @@ export const getProjects = async () => {
     const querySnapshot = await getDocs(projectsCollectionRef);
     const projects = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     return projects;
-  };
+  }
+
+function makeid(length = 20) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
 
