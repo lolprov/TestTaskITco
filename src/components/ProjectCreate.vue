@@ -62,74 +62,30 @@ let file = ""
       const form = reactive({ name: '', desc: '', image: '' })
       const router = useRouter()
       const onSubmit = async () => {
-        // if (form.image != ''){
     try {
-        // console.log(file)
         const imageUrl = await uploadImage(file);
         form.image = imageUrl;
-        // console.log(form.image)
-        // alert("Картинка успешно загружена")
-
           await createProject({ ...form })
           form.name = ''
           form.desc = ''
           form.image = ''
         router.push('/')
-        // }
-        // else {
-        //   alert("Вы не выбрали (не загрузили картинку!)")
-        // }
       } catch (error) {
         alert("Вы загрузили не картинку!")
-        // console.error('Error uploading image:', error);
       }
       }
       const handleFileUpload = async (event) => {
       file = event.target.files[0];
-      // console.log(file)
-      // try {
-        //  bufURL = URL.createObjectURL(file);
-        // const imageUrl = await uploadImage(file);
-        form.image = URL.createObjectURL(file);
-        // console.log(form.image)
-      //   alert("Картинка успешно загружена")
-      // } catch (error) {
-      //   alert("Вы загрузили не картинку!")
-      //   // console.error('Error uploading image:', error);
-      // }
-
+      form.image = URL.createObjectURL(file);
     }
     const redirectToHome = async () => {
-      // if (this.form.image != ''){
-      //     await deleteImage(this.form.image)
-      // }
       router.push('/')
     }
-      
-      
-  
       return { form, onSubmit, handleFileUpload, redirectToHome }
     },
 
   methods: {
-    // async handleFileUpload(event) {
-    //   const file = event.target.files[0];
-    //   try {
-    //     const imageUrl = await uploadImage(file);
-    //     this.form.image = imageUrl;
-    //     alert("Картинка успешно загружена")
-    //   } catch (error) {
-    //     alert("Вы загрузили не картинку!")
-    //     // console.error('Error uploading image:', error);
-    //   }
 
-    // },
-    // async redirectToHome(){
-    //   if (this.form.image != ''){
-    //       await deleteImage(this.form.image)
-    //   }
-    //   router.push('/')
-    // }
   }
 
 }

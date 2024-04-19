@@ -78,25 +78,12 @@
     })
 
     const update = async () => {
-      // console.log(form.image)
-      // console.log(startImage)
-      // console.log('Я фрик')
-
-      // if (form.image != startImage){
-      //   await deleteImage(startImage)
-      // }
       try{
-        // console.log("asdasdasd" + form.image)
         if (file != ""){
         const imageUrl = await uploadImage(file)
         form.image = imageUrl
         }
         await updateProject(projectId.value, { ...form })
-        // const imageUrl = await uploadImage(file)
-        // form.image = imageUrl
-        // await updateProject(projectId.value, { ...form })
-        console.log(form.image)
-        console.log(startImage)
         if (form.image != startImage){
         await deleteImage(startImage)
         }
@@ -113,14 +100,7 @@
   const handleFileUpload = async (event) => {
     if (event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg" || event.target.files[0].type == "image/png"){
     file = event.target.files[0];
-      // try {
-      //   const imageUrl = await uploadImage(file);
     form.image = URL.createObjectURL(file);
-      //   alert("Картинка успешно загружена")
-      // } catch (error) {
-      //   alert("Вы загрузили не картинку!")
-      //   // console.error('Error uploading image:', error);
-      // }
     }
     else{
       alert("Выбран неверный тип файла. Картинка не будет изменена")
@@ -128,9 +108,6 @@
   }
 
     const fromEditToHome = async () => {
-      // if (form.image !== startImage) {
-        // await deleteImage(form.image)
-      // }
       router.push('/')
     }
 
