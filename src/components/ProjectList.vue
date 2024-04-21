@@ -22,9 +22,7 @@
                   Edit
                 </button>
               </router-link>
-              <button class="btn btn-danger btn-sm" @click="delAndUp(id, image)">
-                Delete
-              </button>
+              <input type="checkbox" :value="{ id, name, desc, image }" v-model="selectedProjects" class="large-checkbox" >
             </td>
           </tr>
         </tbody>
@@ -34,6 +32,8 @@
     <router-link :to="`/addproject`">
     <button type="button" class="btn btn-success">Добавить</button>
     </router-link>
+    <p></p>
+    <button type="button" class="btn btn-danger" @click="deleteSelected">Удалить выбранные</button>
     
   </template>
   
@@ -45,12 +45,26 @@
   export default {
   data() {
     return {
-      projects: [], 
+      projects: [],
+      selectedProjects: [],
       deleteProject,
       uploadImage
     };
   },
   methods: {
+    async deleteSelected() {
+      if (confirm("Вы действительно хотите удалить выбранные проекты?")) {
+        if (this.selectedProjects.length != 0){
+        for (const project of this.selectedProjects) {
+          console.log(project)
+          await deleteImage(project.image)
+          await deleteProject(project.id)
+        }
+        this.projects = await getProjects()
+        this.selectedProjects = [] // сброс выбранных проектов после удаления
+      }
+    }
+    },
     async delAndUp(id, image){
       if (confirm("Вы действительно хотите удалить этот проект?")){
       await deleteImage(image)
@@ -65,7 +79,8 @@
   async created() {
     this.projects = await getProjects();
     console.log(this.projects)
-  }
+  },
+  
 };
   </script>
 
@@ -74,5 +89,10 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.large-checkbox {
+  transform: scale(1.5);
+  margin-left: 10px;
 }
 </style>
